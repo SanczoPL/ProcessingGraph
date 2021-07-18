@@ -13,8 +13,8 @@
 #include "processing.h"
 #include "postprocessing.h"
 
-#include "utils/includespdlog.h"
-#include "utils/configreader.h"
+#include "includespdlog.h"
+#include "configreader.h"
 
 template<typename T, typename T_data>
 class Graph
