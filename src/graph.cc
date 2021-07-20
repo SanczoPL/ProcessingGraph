@@ -185,24 +185,32 @@ template<typename T, typename T_data>
 void Graph<T, T_data>::returnData(int i, std::vector<cv::Mat> & outputData, std::vector<std::vector<T_data>> &outputDataVector,
 							std::vector<std::vector<T_data>>& data)
 {
+	#ifdef DEBUG
 	Logger->trace("Graph<T, T_data>::returnData()");
+	#endif
 	for (int ii = 0; ii < data[i].size(); ii++)
 	{
 		outputData.push_back(data[i][ii].processing.clone());
 	}
 	outputDataVector.push_back(data[i]);
+	#ifdef DEBUG
 	Logger->trace("Graph<T, T_data>::returnData() done");
+	#endif
 }
 
 template<typename T, typename T_data>
 void Graph<T, T_data>::returnData(int i, std::vector<cv::Mat> & outputData, std::vector<std::vector<T_data>>& data)
 {
+	#ifdef DEBUG
 	Logger->trace("Graph<T, T_data>::returnData()");
+	#endif
 	for (int ii = 0; ii < data[i].size(); ii++)
 	{
 		outputData.push_back(data[i][ii].processing.clone());
 	}
+	#ifdef DEBUG
 	Logger->trace("Graph<T, T_data>::returnData() done");
+	#endif
 }
 
 template class Graph<Processing, _data>;
