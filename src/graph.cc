@@ -19,7 +19,9 @@ constexpr auto HEIGHT{ "Height" };
 template<typename T, typename T_data>
 Graph<T, T_data>::Graph()
 {
-	Logger->trace("Graph<T, T_data>::Graph()");
+	#ifdef DEBUG
+	Logger->debug("Graph<T, T_data>::Graph()");
+	#endif
 }
 
 template<typename T, typename T_data>
