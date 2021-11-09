@@ -324,12 +324,16 @@ void Case::deleteData()
 
 fitness Case::process(bool test, int initFrames)
 {
+	#ifdef DEBUG_CASE
+	Logger->debug("Case::process() m_block.size:{}, initFrames:{}, test:{}", m_block.size(), initFrames, test);
 	if(test)
 	{
 		Logger->debug("Case::process() testing dataset");
 	}
-	#ifdef DEBUG_CASE
-		Logger->debug("Case::process() m_block,size:{}", m_block.size());
+	else
+	{
+		Logger->debug("Case::process() training dataset:");
+	}
 	#endif
 
 	m_time = 0;
