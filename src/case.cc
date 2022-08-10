@@ -143,6 +143,26 @@ void Case::processing(bool test, const int iteration)
 	{
 		input = m_dataMemory->cleanTrain(iteration).clone();
 	}
+
+	cv::Mat gt;
+	cv::Mat inputImage;
+	if (test)
+	{
+		gt = m_dataMemory->gtTest(iteration).clone();
+		inputImage = m_dataMemory->cleanTest(iteration).clone();
+	}
+	else
+	{
+		gt = m_dataMemory->gtTrain(iteration).clone();
+		inputImage = m_dataMemory->cleanTrain(iteration).clone();
+	}
+
+	std::vector<cv::Mat> inputs{ input, gt, inputImage };
+
+	//m_outputData.push_back(gt.clone());
+	//m_outputData.push_back(inputImage.clone());
+
+
 	#ifdef DEBUG_CASE
 		Logger->debug("Case::processing() iteration:{}", iteration);
 		Logger->debug("Case::processing() graph[{}] Processing:", iteration);
@@ -156,7 +176,7 @@ void Case::processing(bool test, const int iteration)
 		#ifdef DEBUG_CASE
 		Logger->debug("Case::processing() i:{}, _prevActive.size:{}", i, _prevActive.size());
 		#endif	
-		if (m_graph_processing.checkIfLoadInputs(_prevActive, dataVec, input))
+		if (m_graph_processing.checkIfLoadInputs(_prevActive, dataVec, inputs, i))
 		{
 			m_graph_processing.loadInputs(_prevActive, dataVec, m_graph_config, m_data);		
 		}
@@ -174,10 +194,13 @@ void Case::processing(bool test, const int iteration)
 		}
 		m_data.push_back((dataVec));
 
+/*
 		if (m_graph_processing.checkIfReturnData(_nextActive))
 		{
 			m_graph_processing.returnData(i, m_outputData, m_data);
-		}
+		}**/
+
+		m_graph_processing.checkAndReturnData(_nextActive, i, m_outputData, m_data);
 	
 		m_time += m_block[i]->getElapsedTime();
 		dataVec.clear();
@@ -186,20 +209,7 @@ void Case::processing(bool test, const int iteration)
 		Logger->debug("Case::processing() graph[{}] Intephase:", iteration);
 	#endif
 	
-	cv::Mat gt;
-	cv::Mat inputImage;
-	if (test)
-	{
-		gt = m_dataMemory->gtTest(iteration).clone();
-		inputImage = m_dataMemory->cleanTest(iteration).clone();
-	}
-	else
-	{
-		gt = m_dataMemory->gtTrain(iteration).clone();
-		inputImage = m_dataMemory->cleanTrain(iteration).clone();
-	}
-	m_outputData.push_back(gt.clone());
-	m_outputData.push_back(inputImage.clone());
+	
 	#ifdef DEBUG_CASE
 	Logger->debug("Case::processing() postprocess iteration:{}, m_outputData.size:{}", iteration, m_outputData.size());
 	#endif

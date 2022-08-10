@@ -130,6 +130,10 @@ void Graph<T, T_data>::loadInputs(const QJsonArray &prevActive, std::vector<T_da
 		{
 			Logger->error("Graph<T, T_data>::loadInputs() load unsupported graph: _prevIterator:{}, signalToCopy:{}", 
 			_prevIterator, signalToCopy);
+			Logger->error("Graph<T, T_data>::loadInputs() prevActive.size():{}", prevActive.size());
+			Logger->error("Graph<T, T_data>::loadInputs() dataVec.size():{}", dataVec.size());
+			qDebug()<< "prevActive:" << prevActive;
+			qDebug()<< "a_graph:" << a_graph;
 		}
 		#ifdef DEBUG
 			Logger->debug("Graph<T, T_data>::loadInputs() _prevIterator:{}", _prevIterator);
@@ -209,6 +213,26 @@ void Graph<T, T_data>::returnData(int i, std::vector<cv::Mat> & outputData, std:
 	for (int ii = 0; ii < data[i].size(); ii++)
 	{
 		outputData.push_back(data[i][ii].processing.clone());
+	}
+	#ifdef DEBUG
+	Logger->trace("Graph<T, T_data>::returnData() done");
+	#endif
+}
+
+template<typename T, typename T_data>
+void Graph<T, T_data>::checkAndReturnData(const QJsonArray &nextActive, int i, std::vector<cv::Mat> & outputData, 
+std::vector<std::vector<T_data>>& data)
+{
+	#ifdef DEBUG
+	Logger->trace("Graph<T, T_data>::returnData()");
+	#endif
+	
+	for (int j = 0; j < nextActive.size(); j++)
+	{
+		if (nextActive[j].toObject()[ACTIVE].toInt() == -1)
+		{
+			outputData.push_back(data[i][j].processing.clone());
+		}
 	}
 	#ifdef DEBUG
 	Logger->trace("Graph<T, T_data>::returnData() done");

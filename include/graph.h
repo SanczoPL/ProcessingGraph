@@ -34,6 +34,9 @@ class Graph
 							std::vector<std::vector<T_data>>& data);
 							
 		void returnData(int i, std::vector<cv::Mat> & outputData, std::vector<std::vector<T_data>>& data);
+
+		void checkAndReturnData(const QJsonArray &nextActive, int i, std::vector<cv::Mat> & outputData, 
+		std::vector<std::vector<T_data>>& data);
 		
 };
 
